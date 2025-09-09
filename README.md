@@ -16,6 +16,8 @@ https://rashika-maharani-eshoppbp.pbp.cs.ui.ac.id/
     - Untuk routing pada <url.py> di aplikasi main, saya menambahkan <path('', show_main, name='show_main')> di bagian <urlpatterns> untuk memetakan root aplikasi ke fungsi <show_main>.
     - Terakhir untuk deployment ke PWS, saya telah menyiapkan file <.env.prod> sebelumnya dan mengatur setting database PostreSQL di <settings.py>, lalu melakukan deploy ke PWS
 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
+    https://drive.google.com/file/d/1kaNdpuV34fBlfQ0zA85iuWSas7c4Cfqe/view?usp=sharing
+    Pertama, permintaan yang masuk ke dalam server Django akan diproses melalui <urls.py> untuk diteruskan ke <views.py>. Apabila terdapat proses yang membutuhkan keterlibatan database, maka nantinya <views.py> akan memanggil query ke <models.py> dan database akan mengembalikan hasil dari query tersebut ke <views.py>. Setelah permintaan telah selesai diproses, hasil proses tersebut akan dipetakan ke dalam HTML yang sudah didefinisikan sebelum <main.html> akhirnya HTML tersebut dikembalikan ke pengguna sebagai respons.
 3. Jelaskan peran settings.py dalam proyek Django!
     Peran <settings.py> di Django ialah, <settings.py> berisi seluruh konfigurasi proyek Django, seperti database, aplikasi yang digunakan, middleware, pengaturan keamanan, path static files, dan konfigurasi lainnya.
 4. Bagaimana cara kerja migrasi database di Django?
