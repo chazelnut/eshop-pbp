@@ -55,7 +55,7 @@ https://rashika-maharani-eshoppbp.pbp.cs.ui.ac.id/
     - Saya membuat form di <add_product.html> dan fungsi <add_product> di <views.py> yang menggunakan <ProductForm> untuk menambah produk baru.
     - Saya membuat template <product_detail.html> dan fungsi <show_product> untuk menampilkan detail produk berdasarkan <ID>.
     - Saya menjawab pertanyaan dengan melanjutkan <README.md> dari tugas sebelumnya
-    - Saya mengakses endpoint </xml/>, </json/>, </xml/<product_id>/>, dan </json/<peoduct_id>/> di Postman, lalu mengambil screenshot hasilnya dan menambahkannya ke google drive README.md yang sama dengan tugas sebelumnya.
+    - Saya mengakses endpoint </xml/>, </json/>, </xml/<product_id>/>, dan </json/<peoduct_id>/> di Postman, lalu mengambil screenshot hasilnya dan menambahkannya ke google drive <https://drive.google.com/drive/folders/1QtjxIK2Gqd3tVreBXKvaXjVkdyj33KWf?usp=sharing> pada README.md yang sama dengan tugas sebelumnya.
     - Setelah semua selesai, saya melakukan <git add .>, <git commit -m "Finish tugas 3">, <git push origin master> (untuk push ke repository GitHub), dan <git push pws master> (untuk push ke pws).
 6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
     Masih sama seperti sebelumnya.
