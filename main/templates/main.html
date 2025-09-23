@@ -10,7 +10,19 @@
   <button>+ Add Product</button>
 </a>
 
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
+</a>
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
 <hr>
+
+<a href="?filter=all">
+    <button type="button">All Articles</button>
+</a>
+<a href="?filter=my">
+    <button type="button">My Articles</button>
+</a> 
 
 {% if not product_list %}
 <p>Belum ada data produk pada emyu shop.</p>
@@ -30,8 +42,8 @@
   {% endif %}
 
   <p><b>Harga: </b> Rp. {{ product.price }}</p>
-  <p>{{ product.description|truncatewords:25 }}...</p>
   <p>Tersisa {{ product.stock }} items lagi.</p>
+  <p>{{ product.description|truncatewords:25 }}...</p>
   <p><a href="{% url 'main:show_product' product.id %}"><button>Detail Product</button></a></p>
 </div>
 

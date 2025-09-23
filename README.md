@@ -1,7 +1,8 @@
 https://rashika-maharani-eshoppbp.pbp.cs.ui.ac.id/
 
+# Tugas 2
 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-    - Hal pertama yang saya lakukan adalah membuat proyek Django baru dengan menyalakan virtual environment dan menginstal aplikasi-aplikasi yang dibutuhkan pada <requrements.txt>. Setelah itu saya menjalankan perintah <django-admin startproject eshop_pbp .> sehingga terciptalah proyek <eshop_pbp>.
+    - Hal pertama yang saya lakukan adalah membuat proyek Django baru dengan menyalakan virtual environment dan menginstal aplikasi-aplikasi yang dibutuhkan pada <requirements.txt>. Setelah itu saya menjalankan perintah <django-admin startproject eshop_pbp .> sehingga terciptalah proyek <eshop_pbp>.
     - Selanjutnya saya membuat aplikasi baru yaitu main dengan menjalankan perintah <py manage.py startapp main> sehingga terbentuk folder <main> di dalam proyek.
     - Untuk melakukan routing proyek ke aplikasi main, saya menambahkan baris <path('', include('main.urls'))> pada file <urls.py> di bagian <urlpatterns> sehingga semua request ke root dapat diarahkan ke aplikasi <main>.
     - Untuk membuat model product di aplikasi main, saya mengisi <model.py> dengan <product> yang memiliki atribut:
@@ -32,6 +33,7 @@ https://rashika-maharani-eshoppbp.pbp.cs.ui.ac.id/
 6. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
     Saya sangat mengapresiasi hasil bimbingan dari asisten dosen kepada mahasiswa karena sudah sabar dan cepat tanggap. Mungkin untuk saran kedepannya asisten dosen bisa bersikap adil atau bisa lebih membagi waktu dalam memberikan bantuan lab ke mahasiswa lain, bukan hanya terpaku pada 1 orang dalam waktu yang lama. Terimakasih.
 
+# Tugas 3
 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
     Data delivery diperlukan agar data dapat dipertukarkan antara server dan client ataupun antar sistem yang berbeda. Dengan data delivery, aplikasi dapat menampilkan, mengirim, dan menerima data secara dinamis baik dalam bentuk API (JSON/XML) maupun file. Hal ini tentunya penting untuk integrasi serta pengalaman pengguna secara real-time.
 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
@@ -59,3 +61,35 @@ https://rashika-maharani-eshoppbp.pbp.cs.ui.ac.id/
     - Setelah semua selesai, saya melakukan <git add .>, <git commit -m "Finish tugas 3">, <git push origin master> (untuk push ke repository GitHub), dan <git push pws master> (untuk push ke pws).
 6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
     Masih sama seperti sebelumnya.
+
+# Tugas 4
+1. Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
+    - Django AuthenticationForm adalah form bawaan Django untuk proses login, yang memvalidasi username dan password terhadap data user di database.
+    - Kelebihan:
+        1. Mudah digunakan, karena sudah terintegrasi dengan sistem autentikasi Django.
+        2. Otomatis melakukan validasi dan error handling.
+        3. Aman, karena sudah mengikuti best practice Django.
+    - Kekurangan:
+        1. Kurang fleksibel untuk custom field atau tampilan.
+        2. Hanya mendukung autentikasi berbasis username dan password secara default.
+2. Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
+    - Autentikasi adalah proses verifikasi identitas pengguna (login). Menggunakan sistem user dan login/logout bawaan (<AuthenticationForm>, <login>, <logout>).
+    - Otorisasi adalah proses pengecekan hak akses pengguna terhadap fitur/data tertentu. Menggunakan decorator seperti <@login_required> dan sistem permission/group pada model dan view.
+3. Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
+    - Session:
+        Kelebihan: Data disimpan di server, lebih aman, bisa menyimpan data besar.
+        Kekurangan: Membebani server, butuh mekanisme session management.
+    - Cookies:
+        Kelebihan: Disimpan di client, cocok untuk data kecil (misal: preferensi user).
+        Kekurangan: Rentan terhadap manipulasi, kapasitas terbatas, bisa dihapus user.
+4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+    - Penggunaan cookies tidak sepenuhnya aman secara default. Risiko: pencurian data (XSS), manipulasi cookies, dan CSRF. Django menangani dengan:
+    1. Menggunakan HttpOnly dan Secure flag pada cookies.
+    2. CSRF protection dengan csrf_token.
+    3. Session data tidak disimpan langsung di cookies, hanya session key.
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+    - Menambahkan fungsi <registrasi>, <login>, dan <logout> di <views.py> menggunakan <UserCreationForm> dan <AuthenticationForm>.
+    - Membuat dua akun user (chazelnut dan chelle) dan masing-masing menambahkan tiga dummy data produk di lokal.
+    - Menghubungkan model <Product> dengan <User> menggunakan <ForeignKey>.
+    - Menampilkan detail user yang sedang login (<username>) dan menampilkan cookies <last_login> di halaman utama.
