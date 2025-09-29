@@ -1,0 +1,68 @@
+{% load static %}
+<article class="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-lg transition-transform duration-300 overflow-hidden">
+  <div class="md:flex">
+    <div class="md:w-2/5 w-full h-56 md:h-auto overflow-hidden">
+      {% if product.thumbnail %}
+        <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover md:object-center transform transition-transform duration-400 hover:scale-105">
+      {% else %}
+        <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300">No Image</div>
+      {% endif %}
+    </div>
+
+    <div class="md:w-3/5 w-full p-4 flex flex-col justify-between">
+      <div>
+        <div class="flex items-start justify-between gap-4">
+          <div class="min-w-0">
+            <h3 class="text-lg font-semibold text-gray-900 mb-1 break-words">
+              <a href="{% url 'main:show_product' product.id %}" class="hover:text-green-600 transition-colors">
+                {{ product.name }}
+              </a>
+            </h3>
+
+            <div class="flex items-center gap-2 mt-1 text-sm">
+              <span class="inline-block px-2 py-0.5 rounded-full bg-green-50 text-green-700 ring-1 ring-green-100">
+                {{ product.get_category_display }}
+              </span>
+
+              <span class="inline-block px-2 py-0.5 rounded-full bg-gray-50 text-green-600 text-sm font-medium ring-1 ring-gray-100">
+                Rp {{ product.price }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-xs text-gray-400 mb-2 mt-2">
+          <time datetime="{{ product.uploaded_at|date:'c' }}">{{ product.uploaded_at|date:"M j, Y" }}</time>
+        </div>
+
+        <p class="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-4">
+          {{ product.description|truncatewords:20 }}
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+        <a href="{% url 'main:show_product' product.id %}" class="text-sm text-green-600 font-medium hover:text-green-700">
+          Detail Product
+        </a>
+
+        <div class="flex items-center space-x-3">
+          {% if product.is_featured %}
+            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700 ring-1 ring-green-50">
+              Featured
+            </span>
+          {% endif %}
+
+          {% if user.is_authenticated and product.user == user %}
+            <a href="{% url 'main:edit_product' product.id %}" class="text-sm text-green-700 hover:text-green-800 transition-colors">
+              Edit
+            </a>
+
+            <a href="{% url 'main:delete_product' product.id %}" class="text-sm text-red-600 hover:text-red-700 transition-colors">
+              Delete
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</article>

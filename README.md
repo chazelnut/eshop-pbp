@@ -87,9 +87,41 @@ https://rashika-maharani-eshoppbp.pbp.cs.ui.ac.id/
     1. Menggunakan HttpOnly dan Secure flag pada cookies.
     2. CSRF protection dengan csrf_token.
     3. Session data tidak disimpan langsung di cookies, hanya session key.
-
 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
     - Menambahkan fungsi <registrasi>, <login>, dan <logout> di <views.py> menggunakan <UserCreationForm> dan <AuthenticationForm>.
     - Membuat dua akun user (chazelnut dan chelle) dan masing-masing menambahkan tiga dummy data produk di lokal.
     - Menghubungkan model <Product> dengan <User> menggunakan <ForeignKey>.
     - Menampilkan detail user yang sedang login (<username>) dan menampilkan cookies <last_login> di halaman utama.
+
+# Tugas 5
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+    - Urutan prioritas CSS selector ditentukan oleh spesifisitas dan urutan penulisan:
+        1. Inline style (style="")
+        2. ID selector (#id)
+        3. Class/attribute/pseudo-class selector (.class, [attr], :hover)
+        4. Tag selector (div, p)
+        5. Universal selector (*).
+    - Jika spesifisitas sama, maka selector yang ditulis terakhir akan diambil
+    - !important akan mengalahkan semua aturan lain.
+2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+    - Responsive design penting agar tampilan web menyesuaikan berbagai ukuran layar (desktop, tablet, mobile), sehingga user experience tetap optimal di semua device. Contoh aplikasi:
+        - Sudah responsive: Tokopedia, Shopee, Gmail (tampilan menyesuaikan device, mudah digunakan di HP/laptop).
+        - Belum responsive: Website jadul atau web kampus lama, contohnya email ui:v (tampilan pecah di HP, tombol/teks tidak terbaca). Responsive design meningkatkan aksesibilitas dan kepuasan pengguna.
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+    - Margin: Jarak di luar border elemen, memisahkan elemen dari elemen lain.
+        <.box { margin: 16px; }>
+    - Border: Garis di sekeliling elemen, antara margin dan padding.
+        <.box { border: 2px solid #fb6f92; }>
+    - Padding: Jarak di dalam border, antara border dan konten.
+        <.box { padding: 12px; }>
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+    - Flexbox: Layout satu dimensi (horizontal/vertical), memudahkan align dan distribusi item dalam container.
+        <.container { display: flex; justify-content: center; align-items: center; }>
+    - Grid: Layout dua dimensi (baris dan kolom), cocok untuk desain kompleks seperti galeri atau dashboard.
+        <.container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }>
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+    - Membuat fungsi <edit_product> dan <delete_product> di <views.py> dan routing di <urls.py>.
+    - Membuat tombol Edit dan Delete pada setiap card product di <card_product>.html.
+    - Membuat dan mengkustomisasi halaman <login>, <register>, <add_product>, <edit_product>, dan <product_detail> dengan Tailwind CSS dan custom CSS agar menarik dan konsisten.
+    - Membuat halaman daftar product yang responsive dan menarik, menampilkan gambar <no_product.png> dan pesan jika belum ada product, serta <card_product> jika sudah ada.
+    - Membuat navbar yang responsive untuk mobile dan desktop di <navbar.html> dengan Tailwind CSS.
