@@ -125,3 +125,23 @@ https://rashika-maharani-eshoppbp.pbp.cs.ui.ac.id/
     - Membuat dan mengkustomisasi halaman <login>, <register>, <add_product>, <edit_product>, dan <product_detail> dengan Tailwind CSS dan custom CSS agar menarik dan konsisten.
     - Membuat halaman daftar product yang responsive dan menarik, menampilkan gambar <no_product.png> dan pesan jika belum ada product, serta <card_product> jika sudah ada.
     - Membuat navbar yang responsive untuk mobile dan desktop di <navbar.html> dengan Tailwind CSS.
+
+# Tugas 6
+1. Apa perbedaan antara synchronous request dan asynchronous request?
+    - Synchronous request adalah proses request dan response terjadi secara berurutan. Alurnya yaitu, browser menunggu server merespon sebelum bisa melakukan aksi lain serta halaman biasanya reload atau berpindah.
+    - Asynchronous request adalah request yang dikirim ke server tanpa mengganggu proses utama, browser bisa tetap interaktif dan tidak perlu reload halaman. Contohnya menggunakan AJAX.
+2. Bagaimana AJAX bekerja di Django (alur request–response)?
+    - Client (browser) mengirim request AJAX (biasanya via JavaScript/fetch/XHR) ke endpoint Django.
+    - Django menerima request, memprosesnya di view, dan mengembalikan response (biasanya JSON).
+    - Client menerima response dan mengupdate tampilan halaman secara dinamis tanpa reload.
+3. Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+    - Halaman tidak perlu reload, sehingga lebih cepat dan interaktif.
+    - User experience lebih baik karena data bisa diupdate secara real-time.
+    - Mengurangi beban server dan bandwidth karena hanya data yang dibutuhkan yang dikirim.
+4. Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+    - Selalu sertakan dan validasi csrf_token pada setiap request POST.
+    - Validasi input di backend (Django view/form).
+    - Gunakan HTTPS untuk mencegah pencurian data.
+    - Batasi rate request dan gunakan mekanisme error handling.
+5. Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+    - AJAX membuat website lebih responsif dan interaktif, karena data bisa diambil dan ditampilkan tanpa reload halaman. User bisa melakukan aksi seperti submit form, filter data, atau update konten dengan lebih cepat dan seamless.
