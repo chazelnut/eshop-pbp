@@ -7,6 +7,7 @@
 
 {% block content %}
 {% include 'navbar.html' %}
+{% include 'modal.html' %}
 <div class="bg-gray-50 w-full pt-16 min-h-screen">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -34,24 +35,182 @@
     </div>
 
     <!-- Product Grid -->
-    {% if not product_list %}
-      <div class="bg-white rounded-lg border border-gray-200 p-12 text-center">
-        <div class="w-32 h-32 mx-auto mb-4">
-          <img src="{% static 'image/no-product.png' %}" alt="No product available" class="w-full h-full object-contain">
-        </div>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No product found</h3>
-        <p class="text-gray-500 mb-6">Be the first to add product with the community.</p>
-        <a href="{% url 'main:add_product' %}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
-          Add Product
-        </a>
+    
+    <div id="client-list-area">
+      <div id="loading" class="hidden">Loading...</div>
+      <div id="error" class="hidden">Error loading products</div>
+      <div id="empty" class="hidden">
+        <img src="{% static 'image/no-product.png' %}" alt="No product" class="w-32 h-32 mx-auto mb-4">
+        <p>No product found</p>
       </div>
-    {% else %}
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for product in product_list %}
-          {% include 'card_product.html' with product=product %}
-        {% endfor %}
-      </div>
-    {% endif %}
+      <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+    </div>
+
+    
   </div>
 </div>
 {% endblock content %}
+
+<script>
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+const CSRF_HEADER = {'X-CSRFToken': getCookie('csrftoken'), 'X-Requested-With':'XMLHttpRequest'};
+const gridEl   = document.getElementById('grid');
+const loadingEl = document.getElementById('loading');
+const emptyEl   = document.getElementById('empty');
+const errorEl   = document.getElementById('error');
+const PRODUCTS_API_ENDPOINT = "{% url 'main:show_json' %}";
+
+function showSection({loading=false, empty=false, error=false, grid=false} = {}) {
+  if (loadingEl) loadingEl.classList.toggle('hidden', !loading);
+  if (emptyEl)   emptyEl.classList.toggle('hidden', !empty);
+  if (errorEl)   errorEl.classList.toggle('hidden', !error);
+  if (gridEl)    gridEl.classList.toggle('hidden', !grid);
+}
+
+async function fetchProducts() {
+  showSection({loading:true});
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const resp = await fetch(`${PRODUCTS_API_ENDPOINT}?${params.toString()}`, {
+      headers: {'Accept':'application/json'},
+    });
+    if (!resp.ok) throw new Error('Failed');
+    const data = await resp.json();
+
+    gridEl.innerHTML = '';
+    if (!Array.isArray(data) || data.length === 0) {
+      showSection({empty:true});
+      return;
+    }
+
+    data.forEach(p => {
+      const f = p.fields || {};
+      const card = document.createElement('article');
+      card.className = 'bg-white rounded-lg border p-4 shadow-sm';
+      card.innerHTML = `
+        <div class="mb-3">
+          <img src="${f.thumbnail || '/static/image/no-product.png'}"
+               alt="${f.name}" class="w-full h-48 object-cover rounded" />
+        </div>
+        <h3 class="text-lg font-semibold">${f.name}</h3>
+        <p class="text-sm text-gray-600">${f.description || ''}</p>
+        <div class="flex items-center justify-between mt-3">
+          <div>Rp ${f.price}</div>
+          <div>${f.stock} stock</div>
+        </div>
+      `;
+      gridEl.appendChild(card);
+    });
+
+    showSection({grid:true});
+  } catch (err) {
+    console.error(err);
+    showSection({error:true});
+  }
+}
+
+document.addEventListener('DOMContentLoaded', fetchProducts);
+
+function buildProductCard(p) {
+  const f = p.fields || {};
+  const art = document.createElement('article');
+  art.className = 'bg-white rounded-lg border p-4 shadow-sm';
+  art.innerHTML = `
+    <div class="mb-3">
+      <img src="${f.thumbnail || '/static/image/no-product.png'}"
+           alt="${f.name}" class="w-full h-48 object-cover rounded" />
+    </div>
+    <h3 class="text-lg font-semibold">${f.name}</h3>
+    <p class="text-sm text-gray-600">${f.description || ''}</p>
+    <div class="flex items-center justify-between mt-3">
+      <div>Rp ${f.price}</div>
+      <div>${f.stock} stock</div>
+    </div>
+    <div class="mt-3 flex justify-end gap-3">
+      ${
+        f.user && String(f.user) === String("{{ user.id|default:'' }}")
+          ? `<button onclick="openEditModal('${p.pk}')" class="text-green-600">Edit</button>
+             <button onclick="openDeleteConfirm('${p.pk}')" class="text-red-600">Delete</button>`
+          : ''
+      }
+    </div>
+  `;
+  return art;
+}
+
+
+async function openEditModal(id){
+  try {
+    const resp = await fetch("{% url 'main:show_json_by_id' 'dummy' %}".replace('dummy', id), { headers:{'Accept':'application/json'}});
+    if (!resp.ok) throw new Error('Failed to fetch');
+    const data = await resp.json();
+    const p = Array.isArray(data) && data.length && data[0].fields ? {...data[0].fields, id: data[0].pk} : data;
+    document.getElementById('product-id').value = p.id;
+    document.getElementById('name').value = p.name || '';
+    document.getElementById('description').value = p.description || '';
+    document.getElementById('price').value = p.price || '';
+    document.getElementById('stock').value = p.stock || '';
+    document.getElementById('thumbnail').value = p.thumbnail || '';
+    document.getElementById('crudTitle').textContent = 'Edit Product';
+    showModal();
+  } catch(e){
+    console.error(e);
+    showToast('Error','Gagal ambil produk','error');
+  }
+}
+
+// Delete confirm
+let pendingDeleteId = null;
+function openDeleteConfirm(id){
+  pendingDeleteId = id;
+  showConfirmDelete();
+}
+document.getElementById('confirmDeleteBtn')?.addEventListener('click', async function(){
+  if (!pendingDeleteId) return;
+  try {
+    const resp = await fetch(`/delete-product-ajax/${pendingDeleteId}/`, { method: 'POST', headers: CSRF_HEADER, credentials: 'same-origin' });
+    if (!resp.ok) throw new Error('Delete failed');
+    showToast('Deleted','Product berhasil dihapus','success');
+    hideConfirmDelete();
+    fetchProducts();
+  } catch(e){
+    console.error(e);
+    showToast('Error','Gagal menghapus','error');
+  }
+});
+
+// Form submit: create or update
+document.getElementById('productForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const id = document.getElementById('product-id').value;
+  const fd = new FormData(this);
+  try {
+    let url = "{% url 'main:add_product_ajax' %}";
+    if (id) url = `/update-product-ajax/${id}/`;
+    const resp = await fetch(url, { method: 'POST', headers: CSRF_HEADER, body: fd, credentials: 'same-origin' });
+    if (!resp.ok) throw new Error('Save failed');
+    showToast(id ? 'Updated' : 'Created', id ? 'Product updated' : 'Product created', 'success');
+    hideModal();
+    fetchProducts();
+  } catch(e){
+    console.error(e);
+    showToast('Error','Gagal menyimpan','error');
+  }
+});
+
+// Init
+document.addEventListener('DOMContentLoaded', function(){ fetchProducts(); });
+</script>

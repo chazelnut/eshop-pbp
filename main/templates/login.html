@@ -70,6 +70,35 @@
         </button>
       </form>
 
+<script>
+const form = document.querySelector('form');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(form);
+
+  try {
+    const resp = await fetch(window.location.pathname, {
+      method: 'POST',
+      body: fd,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    });
+
+    if (resp.ok) {
+      showToast('Login sukses!', 'Berhasil login, menuju halaman utama...', 'success');
+      setTimeout(() => {
+        window.location.href = '/'; // arahkan ke main page
+      }, 800);
+    } else {
+      showToast('Gagal login', 'Periksa username atau password', 'error');
+    }
+  } catch (err) {
+    console.error(err);
+    showToast('Kesalahan server', 'Terjadi error, coba lagi', 'error');
+  }
+});
+</script>
+
+
       <!-- Messages Display -->
       {% if messages %}
         <div class="mt-6">

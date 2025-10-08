@@ -11,5 +11,40 @@
 </head>
 <body>
     {% block content %} {% endblock content %}
+    {% include 'toast.html' %}
+    {% include 'modal.html' %}
+<script>
+function openCreateModal() {
+  const form = document.getElementById('productForm');
+  const modal = document.getElementById('crudModal');
+  if (!form || !modal) {
+    console.warn("Modal elemen belum ada di halaman.");
+    return;
+  }
+  form.reset();
+  document.getElementById('crudTitle').innerText = "Create Product";
+  modal.classList.remove('hidden');
+}
+
+function hideModal() {
+  const modal = document.getElementById('crudModal');
+  if (modal) modal.classList.add('hidden');
+}
+</script>
+
+<script>
+function showModal() {
+  document.getElementById('crudModal')?.classList.remove('hidden');
+}
+function hideModal() {
+  document.getElementById('crudModal')?.classList.add('hidden');
+}
+function showConfirmDelete() {
+  document.getElementById('confirmDeleteModal')?.classList.remove('hidden');
+}
+function hideConfirmDelete() {
+  document.getElementById('confirmDeleteModal')?.classList.add('hidden');
+}
+</script>
 </body>
 </html>

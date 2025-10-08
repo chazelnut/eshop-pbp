@@ -12,7 +12,7 @@
           <a href="/" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
             Home
           </a>
-          <a href="{% url 'main:add_product' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+          <a href="javascript:void(0)" onclick="openCreateModal()" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
             Add Product
           </a>
         </div>
@@ -58,7 +58,7 @@
           <a href="/" class="block text-gray-600 hover:text-gray-900 font-medium py-3 transition-colors">
             Home
           </a>
-          <a href="{% url 'main:add_product' %}" class="block text-gray-600 hover:text-gray-900 font-medium py-3 transition-colors">
+          <a href="javascript:void(0)" onclick="openCreateModal()" class="block text-gray-600 hover:text-gray-900 font-medium py-3 transition-colors">
             Add Product
           </a>
         </div>
@@ -95,3 +95,16 @@
       });
     </script>
   </nav>
+
+<script>
+(function(){
+  function getCookie(n){ let v=null; if(document.cookie && document.cookie!==''){document.cookie.split(';').forEach(c=>{c=c.trim(); if(c.startsWith(n+'=')) v=decodeURIComponent(c.substring(n.length+1));});} return v; }
+  const logout = document.getElementById('logout-link'); // sesuaikan id/link
+  if(!logout) return;
+  logout.addEventListener('click', async function(e){
+    e.preventDefault();
+    const resp = await fetch(this.href, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken'), 'X-Requested-With':'XMLHttpRequest'}, credentials:'same-origin'});
+    if(resp.ok){ showToast('Bye','Logged out','info'); setTimeout(()=> location.reload(),600); } else showToast('Error','Logout gagal','error');
+  });
+})();
+</script>
